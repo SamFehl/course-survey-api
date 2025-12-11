@@ -39,7 +39,7 @@ app.get("/api/surveys/:id", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys WHERE id = $1",
+      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys_b5tp WHERE id = $1",
       [id]
     );
 
@@ -65,13 +65,13 @@ app.get("/api/surveys/summary", async (req, res) => {
         COALESCE(
           (
             SELECT course_code
-            FROM surveys
+            FROM surveys_b5tp
             GROUP BY course_code
             ORDER BY COUNT(*) DESC
             LIMIT 1
           ), ''
         ) AS most_reviewed_course
-      FROM surveys;
+      FROM surveys_b5tp;
       `
     );
 
