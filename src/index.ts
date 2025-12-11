@@ -60,7 +60,7 @@ app.get("/api/surveys/summary", async (req, res) => {
     const summaryResult = await pool.query(
       `
       SELECT 
-        COUNT(*)::int AS total_surveys,
+        COUNT(*)::int AS total_surveys_b5tp,
         COALESCE(ROUND(AVG(rating)::numeric, 1), 0) AS average_rating,
         COALESCE(
           (
