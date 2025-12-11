@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    // Output JS version compatible with Node 18+
+    "target": "ES2020",
+
+    // Use CommonJS module system (what Node expects)
+    "module": "commonjs",
+
+    // Location of your TS source files
+    "rootDir": "src",
+
+    // Where compiled JS should be placed
+    "outDir": "dist",
+
+    // Allows default imports (import express from "express")
+    "esModuleInterop": true,
+
+    // Prevents common hiding bugs
+    "strict": true,
+
+    // Speed optimization — skip checking type declarations
+    "skipLibCheck": true
+  },
+
+  // Include only our source files
+  "include": ["src"],
+
+  // Exclude output and installed packages
+  "exclude": ["node_modules", "dist"]
+}
