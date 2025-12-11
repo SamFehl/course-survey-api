@@ -66,6 +66,7 @@ app.get("/api/surveys/summary", async (req, res) => {
     }
 });
 // GET /api/surveys/:id - single survey
+// GET /api/surveys/:id - single survey
 app.get("/api/surveys/:id", async (req, res) => {
     const id = Number(req.params.id);
     if (Number.isNaN(id)) {
@@ -76,7 +77,16 @@ app.get("/api/surveys/:id", async (req, res) => {
         if (result.rows.length === 0) {
             return res.status(404).json({ error: "Survey not found" });
         }
-        res.json(result.rows[0]);
+        const r = result.rows[0];
+        const survey = {
+            id: r.id,
+            courseCode: r.course_code,
+            instructor: r.instructor,
+            rating: Number(r.rating), // convert to number here too
+            comments: r.comments,
+            createdAt: r.created_at,
+        };
+        res.json(survey);
     }
     catch (error) {
         console.error("Error fetching survey:", error);
