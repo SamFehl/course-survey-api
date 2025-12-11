@@ -29,38 +29,13 @@ app.get("/api/surveys", async (req, res) => {
   }
 });
 
-// GET /api/surveys/:id - single survey
-app.get("/api/surveys/:id", async (req, res) => {
-  const id = Number(req.params.id);
-
-  if (Number.isNaN(id)) {
-    return res.status(400).json({ error: "Invalid id" });
-  }
-
-  try {
-    const result = await pool.query(
-      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys_b5tp WHERE id = $1",
-      [id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Survey not found" });
-    }
-
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.error("Error fetching survey:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 // GET /api/surveys/summary - simple stats
 app.get("/api/surveys/summary", async (req, res) => {
   try {
     const summaryResult = await pool.query(
       `
       SELECT 
-        COUNT(*)::int AS total_surveys_b5tp,
+        COUNT(*)::int AS total_surveys,
         COALESCE(ROUND(AVG(rating)::numeric, 1), 0) AS average_rating,
         COALESCE(
           (
@@ -83,6 +58,31 @@ app.get("/api/surveys/summary", async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching summary:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// GET /api/surveys/:id - single survey
+app.get("/api/surveys/:id", async (req, res) => {
+  const id = Number(req.params.id);
+
+  if (Number.isNaN(id)) {
+    return res.status(400).json({ error: "Invalid id" });
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys_b5tp WHERE id = $1",
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Survey not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error fetching survey:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
