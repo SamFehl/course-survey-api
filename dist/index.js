@@ -20,7 +20,15 @@ app.get("/api/health", (req, res) => {
 app.get("/api/surveys", async (req, res) => {
     try {
         const result = await db_1.pool.query("SELECT id, course_code, instructor, rating, comments, created_at FROM surveys_b5tp ORDER BY created_at DESC");
-        res.json(result.rows);
+        const rows = result.rows.map((r) => ({
+            id: r.id,
+            courseCode: r.course_code,
+            instructor: r.instructor,
+            rating: Number(r.rating), // <-- convert from string to number
+            comments: r.comments,
+            createdAt: r.created_at,
+        }));
+        res.json(rows);
     }
     catch (error) {
         console.error("Error fetching surveys:", error);
