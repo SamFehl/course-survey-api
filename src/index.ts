@@ -20,7 +20,7 @@ app.get("/api/health", (req, res) => {
 app.get("/api/surveys", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys ORDER BY created_at DESC"
+      "SELECT id, course_code, instructor, rating, comments, created_at FROM surveys_b5tp ORDER BY created_at DESC"
     );
     res.json(result.rows);
   } catch (error) {
